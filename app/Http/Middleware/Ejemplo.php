@@ -20,6 +20,13 @@ class Ejemplo
     {
         Log::info('Esto es el middleware de ejmplo');
 
+        if(!auth()->user()->isAdmin){
+            return response([
+                "success" => true,
+                "message" => "Unauthorized"
+            ], 401);
+        }
+
         return $next($request);
     }
 }

@@ -46,10 +46,41 @@ class TaskController extends Controller
                 "data" => $task
             ], 200);
         } catch (\Throwable $th) {
-            Log::error("Error creating tasks: ".$th->getMessage());
+            Log::error("Error creating tasks: " . $th->getMessage());
             return response([
                 "success" => false,
                 "message" => "Error creating task: " . $th->getMessage()
+            ], 500);
+        }
+    }
+
+    public function getTaskById($id)
+    {
+        Log::info("Get Task by id task");
+        try {
+            $taskId = $id;
+            $userId = auth()->user()->id;
+
+            $task = Task::query()->where('user_id', '=', $userId)->find($taskId);
+
+            if (!$task) {
+                return response([
+                    "success" => true,
+                    "message" => "Task doesnt exists"
+                ], 200);
+            }
+
+            // response
+            return response([
+                "success" => true,
+                "message" => "Task retrieved successfuly",
+                "data" => $task
+            ], 200);
+        } catch (\Throwable $th) {
+            Log::error("Error retrieving task: " . $th->getMessage());
+            return response([
+                "success" => false,
+                "message" => "Error retrieving task: " . $th->getMessage()
             ], 500);
         }
     }

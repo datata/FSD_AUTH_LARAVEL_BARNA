@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Route;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
+
+// AUTH
 Route::group([
     'middleware' => 'jwt.auth'
 ], function () {
@@ -26,8 +28,10 @@ Route::group([
     Route::get('/me', [AuthController::class, 'me']);
 });
 
+// TASKS
 Route::group([
     'middleware' => 'jwt.auth'
 ], function () {
     Route::post('/tasks', [TaskController::class, 'createTask']);
+    Route::get('/tasks/{id}', [TaskController::class, 'getTaskById']);
 });
